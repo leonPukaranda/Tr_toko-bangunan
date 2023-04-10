@@ -111,18 +111,162 @@ Tugas rancang ASD
 		gotoxy(10,13);
 		printf("=  3. Update data barang                              =");
 		gotoxy(10,14);
-		printf("=  4. Cari barang                                     =");
+		printf("=  4. Delete data barang                              =");
 		gotoxy(10,15);
-		printf("=  5. Sorting barang                                  =");
+		printf("=  5. Cari barang                                     =");
 		gotoxy(10,16);
-		printf("=  6. Keluar                                          =");
+		printf("=  6. Sorting barang                                  =");
 		gotoxy(10,17);
-		printf("=======================================================");
+		printf("=  7. Keluar                                          =");
 		gotoxy(10,18);
+		printf("=======================================================");
+		gotoxy(10,19);
 	}
 		 
-		 
-		
+		void updateData() {
+    struct Produk produk;
+    char filename[MAX], code[MAX], choice;
+    int found = 0;
+    FILE *file, *temp;
+
+    printf("\nMasukkan nama file: ");
+    scanf("%s", filename);
+
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("\nfile yang di cari tidak ada\n");
+        return;
+    }
+
+    temp = fopen("temp.txt", "w");
+    if (temp == NULL) {
+        printf("\nTerjadi kesalahan saat membuka file sementara.\n");
+        fclose(file);
+        return;
+    }
+
+    printf("\nMasukkan Kode Barang yang ingin diupdate: ");
+    scanf("%s", code);
+
+    while (fscanf(file, "%[^;];%[^;];%d;%d\n", produk.kode, produk.namabarang, &produk.harga, &produk.stok) != EOF) {
+        if (strcmp(code, produk.kode) == 0) {
+            found = 1;
+
+            printf("\nData sebelumnya:\n");
+            printf("Kode\tNama\t\tHarga\tStok\n");
+            printf("%s\t%s\t\t%d\t%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
+
+            printf("\nApakah Anda yakin ingin mengubah data ini? (Y/N): ");
+            fflush(stdin);
+            scanf("%c", &choice);
+
+            if (choice == 'Y' || choice == 'y') {
+                printf("\nMasukkan Nama Produk Baru: ");
+                scanf(" %[^\n]s", produk.namabarang);
+
+                printf("Masukkan Harga Baru: ");
+                scanf("%d", &produk.harga);
+
+                printf("Masukkan Stok Baru: ");
+                scanf("%d", &produk.stok);
+
+                printf("\nData berhasil diupdate.\n");
+            } else {
+                printf("\nData tidak diupdate.\n");
+            }
+        }
+
+        fprintf(temp, "%s;%s;%d;%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    if (found == 0) {
+        printf("\nData tidak ditemukan.\n");
+        remove("temp.txt");
+        return;
+    }
+
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("\nTerjadi kesalahan saat membuka file.\n");
+        remove("temp.txt");
+        return;
+    }
+
+    temp = fopen("temp.txt", "r");
+    if (temp == NULL) {
+        printf("\nTerjadi kesalahan saat membuka file sementara.\n");
+        fclose(file);
+        remove("temp.txt");
+        return;
+    }
+
+    while (fscanf(temp, "%[^;];%[^;];%d;%d\n", produk.kode, produk.namabarang, &produk.harga, &produk.stok) != EOF) {
+        fprintf(file, "%s;%s;%d;%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
+    }
+
+    fclose(file);
+    fclose(temp);
+    remove("temp.txt");
+}
+
+
+
+ void deleteData() {
+    struct Produk produk;
+    char filename[MAX], tempFile[MAX];
+    FILE *file, *temp;
+
+    // Buka file dan buat file temporary
+    printf("\nMasukkan nama file: ");
+    scanf("%s", filename);
+
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("\nfile yang di cari tidak ada\n");
+        return;
+    }
+
+    sprintf(tempFile, "%s.tmp", filename);
+    temp = fopen(tempFile, "w");
+    if (temp == NULL) {
+        printf("\nTerjadi kesalahan saat membuat file temporary.\n");
+        return;
+    }
+
+    // Ambil kode produk yang ingin dihapus
+    char kode[MAX];
+    printf("Masukkan kode produk yang ingin dihapus: ");
+    scanf("%s", kode);
+
+    // Salin data ke file temporary kecuali data dengan kode produk yang dihapus
+    int found = 0;
+    while (fscanf(file, "%[^;];%[^;];%d;%d\n", produk.kode, produk.namabarang, &produk.harga, &produk.stok) != EOF) {
+        if (strcmp(kode, produk.kode) == 0) {
+            found = 1;
+            continue;
+        }
+        fprintf(temp, "%s;%s;%d;%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    // Hapus file asli dan ganti dengan file temporary
+    if (found) {
+        remove(filename);
+        rename(tempFile, filename);
+        printf("\nData dengan kode %s berhasil dihapus.\n", kode);
+    } else {
+        remove(tempFile);
+        printf("\nTidak ada data dengan kode %s.\n", kode);
+    }
+}
+
+
+ 		
 
 	int main(){
 		struct admin user;
@@ -196,18 +340,31 @@ Tugas rancang ASD
 		
 		 	break;
 		 	case 3:
-			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
-		 	gotoxy(1,13);
+				system("cls");
+	 		gotoxy(1,13);
+	 		printf("\t\t\t\t\tTambah data\t\t\t\t\t");
+				updateData();
+			
 		 	break;
 		 	case 4:
-			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
-		 	gotoxy(1,13);
+				system("cls");
+	 		gotoxy(1,13);
+	 		printf("\t\t\t\t\tTambah data\t\t\t\t\t");
+				deleteData();
+			
+			system("cls");
 		 	break;
 		 	case 5:
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 		 	gotoxy(1,13);
 		 	break;
-		 	case 6:
+			
+			case 6:
+			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
+		 	gotoxy(1,13);
+		 	break;
+			
+		 	case 7:
 		 		system("cls");
 		 		gotoxy(18,11);
 			printf("terimakasih. anda keluar dari program");
