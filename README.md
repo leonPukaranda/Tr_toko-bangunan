@@ -266,7 +266,46 @@ Tugas rancang ASD
 }
 
 
- 		
+		
+void cariData() {
+    struct Produk produk;
+    char filename[MAX], code[MAX];
+    FILE *file;
+
+    // Membuka File dan file temorary
+    printf("\nMasukkan nama file: ");
+    scanf("%s", filename);
+
+    // Mencari Kode pada Barang
+    printf("\nMasukkan kode barang yang ingin dicari: ");
+    scanf("%s", code);
+
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("\nTerjadi kesalahan saat membuka file.\n");
+        return;
+    }
+    // Mengecek Kode Barang Ada Atau Tidak Ada
+    int found = 0;
+    loading();
+    while (fscanf(file, "%[^;];%[^;];%d;%d\n", produk.kode, produk.namabarang, &produk.harga, &produk.stok) != EOF) {
+        if (strcmp(code, produk.kode) == 0) {
+            found = 1;
+            printf("\nData ditemukan:\n");
+            printf("Kode\tNama\t\tHarga\tStok\n");
+            printf("%s\t%s\t\t%d\t%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
+            fclose(file);
+        }
+    }
+
+        if (!found) {
+        printf("\nKode barang tidak ditemukan dalam file.\n");
+    }
+
+
+}
+
+
 
 	int main(){
 		struct admin user;
