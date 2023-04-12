@@ -373,7 +373,7 @@ void cariData() {
 		 	
 		 	case 2:
 		 		system("cls");
-		 	gotoxy(1,0);
+		 	gotoxy(1,13);
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 				lihatData();
 		
@@ -388,14 +388,17 @@ void cariData() {
 		 	case 4:
 				system("cls");
 	 		gotoxy(1,13);
-	 		printf("\t\t\t\t\tTambah data\t\t\t\t\t");
+	 		printf("\t\t\t\t\tDelete data\t\t\t\t\t");
 				deleteData();
 			
 			system("cls");
 		 	break;
 		 	case 5:
-			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
-		 	gotoxy(1,13);
+			system("cls");
+			gotoxy(1,13)
+			printf("\t\t\t\t\tCari data\t\t\t\t\t");
+		 	cariData();
+			
 		 	break;
 			
 			case 6:
