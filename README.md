@@ -437,7 +437,6 @@ int main(){
 	 		printf("\t\t\t\t\tDelete data\t\t\t\t\t");
 				deleteData();
 			
-			system("cls");
 		 	break;
 		 	case 5:
 			system("cls");
