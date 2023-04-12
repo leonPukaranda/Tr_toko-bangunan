@@ -307,7 +307,52 @@ void cariData() {
 
 
 
-	int main(){
+void sortingData(){
+    struct Produk produk[MAX];
+    char filename[MAX];
+    FILE *file;
+    int i, j, n;
+    struct Produk temp;
+
+    printf("\nMasukkan nama file: ");
+    scanf("%s", filename);
+
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("\nTerjadi kesalahan saat membuka file.\n");
+        return;
+    }
+
+    // Baca data dari file dan simpan ke array
+    n = 0;
+    while (fscanf(file, "%[^;];%[^;];%d;%d\n", produk[n].kode, produk[n].namabarang, &produk[n].harga, &produk[n].stok) != EOF) {
+        n++;
+    }
+
+    fclose(file);
+
+    // Lakukan sorting
+    for (i = 0; i < n - 1; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (produk[i].harga > produk[j].harga) {
+                temp = produk[i];
+                produk[i] = produk[j];
+                produk[j] = temp;
+            }
+        }
+    }
+
+    // Tampilkan hasil sorting
+    printf("\nData setelah diurutkan berdasarkan harga produk (dari yang terendah ke tertinggi):\n");
+    printf("Kode\tNama\t\tHarga\tStok\n");
+    for (i = 0; i < n; i++) {
+        printf("%s\t%s\t\t%d\t%d\n", produk[i].kode, produk[i].namabarang, produk[i].harga, produk[i].stok);
+    }
+}
+
+
+
+int main(){
 		struct admin user;
 		
 		 	
@@ -398,14 +443,17 @@ void cariData() {
 			system("cls");
 			gotoxy(1,3);
 			printf("\t\t\t\t\tCari data\t\t\t\t\t");
-		 	cariData();
+		 		cariData();
 			
 		 	break;
 			
 			case 6:
+			system ("cls");
+			gotoxy(1,3);
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
-		 	gotoxy(1,3);
-		 	break;
+            			sortingData();
+
+	 		break;
 			
 		 	case 7:
 		 		system("cls");
