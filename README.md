@@ -1,6 +1,3 @@
-# Tr_toko-bangunan
-Tugas rancang ASD
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,47 +31,58 @@ Tugas rancang ASD
 	};
 	
 			void buatData() {
-		    struct Produk produk;
-		    char filename[MAX];
-		    FILE *file;
-		
-		    printf("\nMasukkan Kode Produk: ");
-		    scanf("%s", produk.kode);
-		
-		    printf("Masukkan Nama Produk: ");
-		    scanf(" %[^\n]s", produk.namabarang);
-		
-		    printf("Masukkan Harga: ");
-		    scanf("%d", &produk.harga);
-		
-		    printf("Masukkan Stok: ");
-		    scanf("%d", &produk.stok);
-		
-		    printf("\nData berhasil dimasukkan.\n");
-		
-		    // Buka file dan simpan data
-		    printf("\nMasukkan nama file: ");
-		    scanf("%s", filename);
-		
-		    file = fopen(filename, "a");
-		    if (file == NULL) {
-		        printf("\nTerjadi kesalahan saat membuka file.\n");
-		        return;
-		    }
-		
-		    fprintf(file, "%s;%s;%d;%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
-		
-		    fclose(file);
-		}
+    char pilihan[10];
+    char filename[MAX];
+    FILE *file;
+    struct Produk produk;
+    
+    do {
+        printf("\n\tMasukkan Kode Produk: ");
+        scanf("%s", produk.kode);
+
+        printf("\tMasukkan Nama Produk: ");
+        scanf(" %[^\n]s", produk.namabarang);
+
+        printf("\tMasukkan Harga:\tRp.");
+        scanf("%d", &produk.harga);
+
+        printf("\tMasukkan Stok: ");
+        scanf("%d", &produk.stok);
+
+        printf("\nData berhasil dimasukkan.\n");
+
+        // Buka file dan simpan data
+        printf("\nMasukkan nama file: ");
+        scanf("%s", filename);
+
+        file = fopen(filename, "a");
+        if (file == NULL) {
+            printf("\nTerjadi kesalahan saat membuka file.\n");
+            return;
+        }
+
+        fprintf(file, "%s;%s;%d;%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
+
+        fclose(file);
+
+        printf("\nApakah Anda ingin menambahkan produk lain? (ya/tidak)\n");
+        printf("Masukan pilihan :");
+        scanf("%s", pilihan);
+    } while (strcmp(pilihan, "ya") == 0);
+    
+}
 		
 		
 		
 		void lihatData() {
     struct Produk produk;
+    char pilihan[10];
     char filename[MAX];
     FILE *file;
 
     // Buka file dan tampilkan data
+    do{
+    	
     printf("\nMasukkan nama file: ");
     scanf("%s", filename);
 
@@ -90,8 +98,11 @@ Tugas rancang ASD
     while (fscanf(file, "%[^;];%[^;];%d;%d\n", produk.kode, produk.namabarang, &produk.harga, &produk.stok) != EOF) {
         printf("%s\t%s\t\t%d\t%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
     }
+    printf("ketik 'Tidak' jika ingin kembali :");
+    scanf("%s",pilihan);
 
     fclose(file);
+	}while (strcmp(pilihan, "ya") == 0);
 }
 
 
@@ -263,6 +274,7 @@ Tugas rancang ASD
         remove(tempFile);
         printf("\nTidak ada data dengan kode %s.\n", kode);
     }
+    
 }
 
 
@@ -270,8 +282,11 @@ Tugas rancang ASD
 void cariData() {
     struct Produk produk;
     char filename[MAX], code[MAX];
+    char pilihan[10];
     FILE *file;
 
+	do{
+		
     // Membuka File dan file temorary
     printf("\nMasukkan nama file: ");
     scanf("%s", filename);
@@ -294,26 +309,36 @@ void cariData() {
             printf("\nData ditemukan:\n");
             printf("Kode\tNama\t\tHarga\tStok\n");
             printf("%s\t%s\t\t%d\t%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
+            
+            printf("ingin cari lagi :");
+            scanf("%s", pilihan);
             fclose(file);
+            
         }
     }
 
         if (!found) {
         printf("\nKode barang tidak ditemukan dalam file.\n");
     }
+  
 
-
+	}while (strcmp(pilihan, "iya") == 0);
+	
+	return display();
 }
 
 
-
-void sortingData(){
+		void sortingData(){
     struct Produk produk[MAX];
     char filename[MAX];
+    char pilihan[10];
     FILE *file;
     int i, j, n;
     struct Produk temp;
-
+	
+	do{
+		
+	
     printf("\nMasukkan nama file: ");
     scanf("%s", filename);
 
@@ -328,6 +353,7 @@ void sortingData(){
     while (fscanf(file, "%[^;];%[^;];%d;%d\n", produk[n].kode, produk[n].namabarang, &produk[n].harga, &produk[n].stok) != EOF) {
         n++;
     }
+    
 
     fclose(file);
 
@@ -344,15 +370,23 @@ void sortingData(){
 
     // Tampilkan hasil sorting
     printf("\nData setelah diurutkan berdasarkan harga produk (dari yang terendah ke tertinggi):\n");
-    printf("Kode\tNama\t\tHarga\tStok\n");
+    printf("\n=============================================\n");
+    printf("Kode\t\tNama\t\tHarga\t\tStok\n");
     for (i = 0; i < n; i++) {
-        printf("%s\t%s\t\t%d\t%d\n", produk[i].kode, produk[i].namabarang, produk[i].harga, produk[i].stok);
+        printf("%s\t\t%s\t\t%d\t\t%d\n", produk[i].kode, produk[i].namabarang, produk[i].harga, produk[i].stok);
     }
+    printf("\n=============================================\n");
+    printf("ingin cari lagi :");
+            scanf("%s", pilihan);
+            
+	}while (strcmp(pilihan, "iya") == 0);
+ system("cls");
 }
 
 
 
-int main(){
+
+	int main(){
 		struct admin user;
 		
 		 	
@@ -410,7 +444,7 @@ int main(){
 			case 1:
 				system("cls");
 				loading();
-		 	gotoxy(1,3);
+		 	gotoxy(0,3);
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 		 		buatData();
 		 		
@@ -419,40 +453,48 @@ int main(){
 		 	
 		 	case 2:
 		 		system("cls");
-		 	gotoxy(1,3);
+		 		loading();
+		 	gotoxy(0,3);
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 				lihatData();
-		
+			system("cls");
 		 	break;
 		 	case 3:
 				system("cls");
-	 		gotoxy(1,3);
+				loading();
+	 		gotoxy(0,3);
 	 		printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 				updateData();
+				system("cls");
 			
 		 	break;
 		 	case 4:
 				system("cls");
-	 		gotoxy(1,3);
+				loading();
+	 		gotoxy(0,3);
 	 		printf("\t\t\t\t\tDelete data\t\t\t\t\t");
 				deleteData();
 			
+			system("cls");
 		 	break;
 		 	case 5:
 			system("cls");
-			gotoxy(1,3);
+			loading();
+			gotoxy(0,3);
 			printf("\t\t\t\t\tCari data\t\t\t\t\t");
-		 		cariData();
-			
+		 	cariData();
+			system("cls");
 		 	break;
 			
 			case 6:
-			system ("cls");
-			gotoxy(1,3);
-			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
-            			sortingData();
-
-	 		break;
+		 	gotoxy(0,3);
+		 	loading();
+		 	system("cls");
+			printf("\t\t\t\t\tsorting data\t\t\t\t\t");
+			sortingData();
+			
+		//	system("cls");
+		 	break;
 			
 		 	case 7:
 		 		system("cls");
@@ -492,8 +534,9 @@ int main(){
 			
 					
 		}
-	
-	
 		
-	
-	
+		
+
+		
+		
+		
