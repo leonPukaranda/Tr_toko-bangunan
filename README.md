@@ -355,7 +355,7 @@ void cariData() {
 		 			gotoxy(20,17);
 		 			printf("!!!S E L A M A T  D A T A N G!!!");
 			system("cls");
-		 			
+		 			loading();
 		 			display();
 					int pilihan;
 					printf("masukan pilihan :");
@@ -364,7 +364,8 @@ void cariData() {
 					switch(pilihan){
 			case 1:
 				system("cls");
-		 	gotoxy(1,0);
+				loading();
+		 	gotoxy(1,3);
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 		 		buatData();
 		 		
@@ -373,21 +374,21 @@ void cariData() {
 		 	
 		 	case 2:
 		 		system("cls");
-		 	gotoxy(1,13);
+		 	gotoxy(1,3);
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 				lihatData();
 		
 		 	break;
 		 	case 3:
 				system("cls");
-	 		gotoxy(1,13);
+	 		gotoxy(1,3);
 	 		printf("\t\t\t\t\tTambah data\t\t\t\t\t");
 				updateData();
 			
 		 	break;
 		 	case 4:
 				system("cls");
-	 		gotoxy(1,13);
+	 		gotoxy(1,3);
 	 		printf("\t\t\t\t\tDelete data\t\t\t\t\t");
 				deleteData();
 			
@@ -395,7 +396,7 @@ void cariData() {
 		 	break;
 		 	case 5:
 			system("cls");
-			gotoxy(1,13)
+			gotoxy(1,3);
 			printf("\t\t\t\t\tCari data\t\t\t\t\t");
 		 	cariData();
 			
@@ -403,7 +404,7 @@ void cariData() {
 			
 			case 6:
 			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
-		 	gotoxy(1,13);
+		 	gotoxy(1,3);
 		 	break;
 			
 		 	case 7:
@@ -425,6 +426,24 @@ void cariData() {
 	
 			 }
 			 return 0;
+		}
+		
+		
+		
+		
+		
+		
+		
+		void loading(){
+			
+			for(int i = 0; i <= 100; i++){
+				gotoxy(35,12);
+        printf("loading %d%%",i);
+        Sleep(5);
+        system("cls");
+    }
+			
+					
 		}
 	
 	
