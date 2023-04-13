@@ -8,6 +8,7 @@
 
 
 
+
 	void gotoxy(int x, int y){
 		COORD coord;
 		coord.X =x;
@@ -15,6 +16,9 @@
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 	}
 
+
+
+	
 
 
 	struct admin{
@@ -89,7 +93,18 @@
     file = fopen(filename, "r");
     if (file == NULL) {
         printf("\nfile yang di cari tidak ada\n");
-        return;
+        
+         printf("\nApakah Anda ingin kembali ke menu utama? (Ya/tidak) ");
+scanf("%s", pilihan);
+
+if (strcmp(pilihan, "Ya") == 0 || strcmp(pilihan, "ya") == 0) {
+    // Kembali ke menu utama
+    main();
+} else {
+    // Menampilkan hasil sorting kembali
+    lihatData();
+}
+        
     }
 
     printf("\nData:\n");
@@ -98,7 +113,7 @@
     while (fscanf(file, "%[^;];%[^;];%d;%d\n", produk.kode, produk.namabarang, &produk.harga, &produk.stok) != EOF) {
         printf("%s\t%s\t\t%d\t%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
     }
-    printf("ketik 'Tidak' jika ingin kembali :");
+    printf("ketik 'ya' jika ingin menampilkan data lain :");
     scanf("%s",pilihan);
 
     fclose(file);
@@ -134,7 +149,7 @@
 		gotoxy(10,19);
 	}
 		 
-		void updateData() {
+	void updateData() {
     struct Produk produk;
     char filename[MAX], code[MAX], choice;
     int found = 0;
@@ -224,7 +239,6 @@
 }
 
 
-
  void deleteData() {
     struct Produk produk;
     char filename[MAX], tempFile[MAX];
@@ -270,6 +284,7 @@
         remove(filename);
         rename(tempFile, filename);
         printf("\nData dengan kode %s berhasil dihapus.\n", kode);
+        sleep(10);
     } else {
         remove(tempFile);
         printf("\nTidak ada data dengan kode %s.\n", kode);
@@ -285,7 +300,7 @@ void cariData() {
     char pilihan[10];
     FILE *file;
 
-	do{
+
 		
     // Membuka File dan file temorary
     printf("\nMasukkan nama file: ");
@@ -309,9 +324,6 @@ void cariData() {
             printf("\nData ditemukan:\n");
             printf("Kode\tNama\t\tHarga\tStok\n");
             printf("%s\t%s\t\t%d\t%d\n", produk.kode, produk.namabarang, produk.harga, produk.stok);
-            
-            printf("ingin cari lagi :");
-            scanf("%s", pilihan);
             fclose(file);
             
         }
@@ -320,11 +332,18 @@ void cariData() {
         if (!found) {
         printf("\nKode barang tidak ditemukan dalam file.\n");
     }
-  
+  printf("\nApakah Anda ingin kembali ke menu utama? (Y/N) ");
+scanf("%s", pilihan);
 
-	}while (strcmp(pilihan, "iya") == 0);
-	
-	return display();
+if (strcmp(pilihan, "Y") == 0 || strcmp(pilihan, "y") == 0) {
+    // Kembali ke menu utama
+    system("cls");
+    main();
+} else {
+    // Melakukan pencarian barang kembali
+    cariData();
+}
+
 }
 
 
@@ -336,7 +355,7 @@ void cariData() {
     int i, j, n;
     struct Produk temp;
 	
-	do{
+	
 		
 	
     printf("\nMasukkan nama file: ");
@@ -345,7 +364,17 @@ void cariData() {
     file = fopen(filename, "r");
     if (file == NULL) {
         printf("\nTerjadi kesalahan saat membuka file.\n");
-        return;
+           printf("\nApakah Anda ingin kembali ke menu utama? (Ya/tidak) ");
+scanf("%s", pilihan);
+
+if (strcmp(pilihan, "Y") == 0 || strcmp(pilihan, "ya") == 0) {
+    // Kembali ke menu utama
+    main();
+} else {
+    // Menampilkan hasil sorting kembali
+    sortingData();
+}
+        
     }
 
     // Baca data dari file dan simpan ke array
@@ -376,11 +405,19 @@ void cariData() {
         printf("%s\t\t%s\t\t%d\t\t%d\n", produk[i].kode, produk[i].namabarang, produk[i].harga, produk[i].stok);
     }
     printf("\n=============================================\n");
-    printf("ingin cari lagi :");
-            scanf("%s", pilihan);
-            
-	}while (strcmp(pilihan, "iya") == 0);
- system("cls");
+    
+    printf("\nApakah Anda ingin kembali ke menu utama? (Ya/tidak) ");
+scanf("%s", pilihan);
+
+if (strcmp(pilihan, "Y") == 0 || strcmp(pilihan, "ya") == 0) {
+    // Kembali ke menu utama
+    system("cls");
+    main();
+} else {
+    // Menampilkan hasil sorting kembali
+    sortingData();
+}
+	
 }
 
 
@@ -400,6 +437,7 @@ void cariData() {
 		 	while (1){
 		 		char username[20];
 		 		char password[20];
+		 	
 		 		
 		 		gotoxy(20,7);
 		 		printf("=========================================");
@@ -432,7 +470,8 @@ void cariData() {
 		 		
 		 		if(strcmp(username, user.username) == 0 && strcmp(password, user.password) == 0){
 		 			gotoxy(20,17);
-		 			printf("!!!S E L A M A T  D A T A N G!!!");
+		 			printf("\t!!!S E L A M A T  D A T A N G!!!");
+		 			sleep(10);
 			system("cls");
 		 			loading();
 		 			display();
@@ -455,7 +494,7 @@ void cariData() {
 		 		system("cls");
 		 		loading();
 		 	gotoxy(0,3);
-			printf("\t\t\t\t\tTambah data\t\t\t\t\t");
+			printf("\t\t\t\t\tlihat data\t\t\t\t\t");
 				lihatData();
 			system("cls");
 		 	break;
@@ -463,9 +502,9 @@ void cariData() {
 				system("cls");
 				loading();
 	 		gotoxy(0,3);
-	 		printf("\t\t\t\t\tTambah data\t\t\t\t\t");
+	 		printf("\t\t\t\t\tUpdate data\t\t\t\t\t");
 				updateData();
-				system("cls");
+			system("cls");
 			
 		 	break;
 		 	case 4:
@@ -483,7 +522,7 @@ void cariData() {
 			gotoxy(0,3);
 			printf("\t\t\t\t\tCari data\t\t\t\t\t");
 		 	cariData();
-			system("cls");
+		
 		 	break;
 			
 			case 6:
@@ -493,16 +532,24 @@ void cariData() {
 			printf("\t\t\t\t\tsorting data\t\t\t\t\t");
 			sortingData();
 			
-		//	system("cls");
+			system("cls");
 		 	break;
 			
 		 	case 7:
 		 		system("cls");
-		 		gotoxy(18,11);
-			printf("terimakasih. anda keluar dari program");
+		 		
+		 		gotoxy(18,4);
+			printf("=======================================");
+		 		gotoxy(18,5);
+			printf("|terimakasih. anda keluar dari program|");
+			gotoxy(18,6);
+			printf("=======================================");
 		 	return 0;
 		 	default:
+		 		
 		 		printf("\tpilihan tidak ada,coba lagi");
+		 		sleep(10);
+		 		system ("cls");
 		 		break;
 					
 					}
@@ -534,9 +581,4 @@ void cariData() {
 			
 					
 		}
-		
-		
-
-		
-		
 		
